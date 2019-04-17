@@ -1,26 +1,39 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Axios from "axios";
+import "./App.css";
+
+import Home from "./pages/home";
+import Courses from "./pages/courses";
+
+import Header from "./pages/components/header";
 
 class App extends Component {
+  state = {
+    courses: []
+  };
+
+  // Fetching the courses from the open API
+  componentDidMount() {
+    Axios.get(
+      "https://linkedcourses-api.test.hel.ninja/linkedcourses-test/v1/event"
+    ).then(res => {
+      console.log(res.data);
+      this.setState({ courses: res.data });
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <div className="App">
+          <div className="container">
+            <Header />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/courses" component={Courses} />
+          </div>
+        </div>
+      </Router>
     );
   }
 }
