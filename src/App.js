@@ -18,8 +18,8 @@ class App extends Component {
     Axios.get(
       "https://linkedcourses-api.test.hel.ninja/linkedcourses-test/v1/event"
     ).then(res => {
-      console.log(res.data);
-      this.setState({ courses: res.data });
+      console.log(res.data.data);
+      this.setState({ courses: res.data.data });
     });
   }
 
@@ -30,7 +30,11 @@ class App extends Component {
           <div className="container">
             <Header />
             <Route exact path="/" component={Home} />
-            <Route exact path="/courses" component={Courses} />
+            <Route
+              exact
+              path="/courses"
+              render={props => <Courses courses={this.state.courses} />}
+            />
           </div>
         </div>
       </Router>
